@@ -99,11 +99,10 @@ IV uses the 2,400-dimensional CKSAAP representation.
 
 ## Model files
 
-Model binaries are intentionally not stored in this GitHub repository or in the
-Python package. The release contains TFLite files only; the source H5 files are
-not required at runtime. The Zenodo record identifier is recorded in
-`minpred/model_manifest.json` together with the expected file names, sizes,
-SHA-256 checksums, input features, and output labels.
+The trained MINpred models were converted to TensorFlow Lite (`.tflite`) for
+efficient and portable CPU inference. They are downloaded automatically from
+Zenodo when required and verified using the file sizes and SHA-256 checksums
+recorded in `minpred/model_manifest.json`.
 
 The model files are archived in Zenodo record
 [`21897103`](https://doi.org/10.5281/zenodo.21897103) under the Creative Commons
@@ -132,8 +131,10 @@ Utah State University, Logan, UT
 
 **Technical Queries / Bugs:** Naveen Duhan
 ([naveen.duhan@usu.edu](mailto:naveen.duhan@usu.edu))
+
 **Scientific Queries:** Dr. Rakesh Kaundal
 ([rkaundal@usu.edu](mailto:rkaundal@usu.edu))
+
 **Lab Website:** [https://kaabil.net](https://kaabil.net)
 
 Released under the terms of the **[MIT License](LICENSE)**.
