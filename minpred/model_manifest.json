@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "model_release": "1.0.0",
+  "zenodo_record_id": "21897103",
+  "models": {
+    "phase1": {
+      "filename": "phase1_minpred.tflite",
+      "bytes": 164117752,
+      "sha256": "6f343f9ca40c6b993812688db2e09e5192228bdd03af1b7cf9f50a453837fd14",
+      "phase": 1,
+      "feature": "DPC+NMBroto",
+      "feature_count": 640,
+      "labels": ["Enzyme", "Non-enzyme"]
+    },
+    "phase2": {
+      "filename": "phase2_minpred.tflite",
+      "bytes": 164641396,
+      "sha256": "54eba22b2d1fddc19b6b19c81154f8c5819c43ddfcc4957332aa71492e56bd8f",
+      "phase": 2,
+      "feature": "DPC+NMBroto",
+      "feature_count": 640,
+      "labels": ["Nitrogen Mineralization", "Non-nitrogen Mineralization"]
+    },
+    "phase3": {
+      "filename": "phase3_minpred.tflite",
+      "bytes": 41716688,
+      "sha256": "9ff129a54606caebf75d525ba10bbed79889dc0cc914a1938a2b69e9a113b410",
+      "phase": 3,
+      "feature": "DPC+NMBroto",
+      "feature_count": 640,
+      "labels": ["Amidohydrolases", "Aminopeptidases", "Aspartic endopeptidases", "Cysteine endopeptidases", "Dipeptidases", "Dipeptidyl-peptidases", "Metalloendopeptidases", "Metallopeptidases", "Omega peptidases", "Serine endopeptidases"]
+    },
+    "phase4_amidohydrolases": {
+      "filename": "phase4_amido_minpred.tflite",
+      "bytes": 157570608,
+      "sha256": "19d005dadcec9aac348ae1b2bb7a519a05639cc1a2c403fa063fb78fd7f9e427",
+      "phase": 4,
+      "feature": "CKSAAP",
+      "feature_count": 2400,
+      "labels": ["3.5.1.1", "3.5.1.2", "3.5.1.4", "3.5.1.5", "3.5.1.11", "3.5.1.28", "3.5.1.68"]
+    },
+    "phase4_aminopeptidases": {
+      "filename": "phase4_aminopeptide_minpred.tflite",
+      "bytes": 157575748,
+      "sha256": "88d70f0913c144347736b76c40bf94bb76d4e90ee1d92e44a448c49f1f629b58",
+      "phase": 4,
+      "feature": "CKSAAP",
+      "feature_count": 2400,
+      "labels": ["3.4.11.-", "3.4.11.1", "3.4.11.2", "3.4.11.4", "3.4.11.5", "3.4.11.6", "3.4.11.9", "3.4.11.10", "3.4.11.18", "3.4.11.19", "3.4.11.24", "Others"]
+    },
+    "phase4_aspartic": {
+      "filename": "phase4_aspartic_minpred.tflite",
+      "bytes": 157571636,
+      "sha256": "460992999135929eb6b1c9d5587ac0c28ae148e2db1a6a3936788cf99407ed00",
+      "phase": 4,
+      "feature": "CKSAAP",
+      "feature_count": 2400,
+      "labels": ["3.4.23.-", "3.4.23.12", "3.4.23.21", "3.4.23.24", "3.4.23.36", "3.4.23.43", "3.4.23.51", "Others"]
+    },
+    "phase4_cysteine": {
+      "filename": "phase4_cysteine_minpred.tflite",
+      "bytes": 157573692,
+      "sha256": "8c7ebb4d09b96da0f12a2d683ca16fcf5447d8b1cdf01a4d2259dbc7323a1dd4",
+      "phase": 4,
+      "feature": "CKSAAP",
+      "feature_count": 2400,
+      "labels": ["3.4.22.-", "3.4.22.8", "3.4.22.10", "3.4.22.37", "3.4.22.40", "3.4.22.49", "3.4.22.68", "3.4.22.70", "3.4.22.71", "Others"]
+    },
+    "phase4_dipeptidases": {
+      "filename": "phase4_dipeptidase_minpred.tflite",
+      "bytes": 157570608,
+      "sha256": "2dc4d1a2d0bd6afca74da3a0d83ca6c02ee6053af266336b0c986f36f807556d",
+      "phase": 4,
+      "feature": "CKSAAP",
+      "feature_count": 2400,
+      "labels": ["3.4.13.-", "3.4.13.9", "3.4.13.19", "3.4.13.20", "3.4.13.21", "3.4.13.22", "Others"]
+    },
+    "phase4_dipeptidyl": {
+      "filename": "phase4_dipeptidyl_minpred.tflite",
+      "bytes": 157570608,
+      "sha256": "721ae8d049ffdb198dd9de235f00d57bd32aa346a6924a058b9714957640d45a",
+      "phase": 4,
+      "feature": "CKSAAP",
+      "feature_count": 2400,
+      "labels": ["3.4.14.-", "3.4.14.1", "3.4.14.5", "3.4.14.10", "3.4.14.11", "3.4.14.12", "Others"]
+    },
+    "phase4_metalloendopeptidases": {
+      "filename": "phase4_metalloendo_minpred.tflite",
+      "bytes": 157573692,
+      "sha256": "5e8410608da08de74b4018884e6f0a2e2467b3af374ae714391f94a91e4e1959",
+      "phase": 4,
+      "feature": "CKSAAP",
+      "feature_count": 2400,
+      "labels": ["3.4.24.-", "3.4.24.3", "3.4.24.13", "3.4.24.39", "3.4.24.40", "3.4.24.55", "3.4.24.64", "3.4.24.75", "3.4.24.84", "Others"]
+    },
+    "phase4_metallopeptidases": {
+      "filename": "phase4_metallopeptide_minpred.tflite",
+      "bytes": 157572664,
+      "sha256": "4f59d661d7f271960cd44e9d1ffebba2e76c059bb9b69678b483fc435e75c740",
+      "phase": 4,
+      "feature": "CKSAAP",
+      "feature_count": 2400,
+      "labels": ["3.4.17.-", "3.4.17.11", "3.4.17.13", "3.4.17.14", "3.4.17.18", "3.4.17.19", "3.4.17.21", "3.4.17.24", "Others"]
+    },
+    "phase4_omega": {
+      "filename": "phase4_omega_minpred.tflite",
+      "bytes": 157570608,
+      "sha256": "b0cd521ac5036664cc3391d6d37339c430929e0107bd9315250f1937e8cb88fe",
+      "phase": 4,
+      "feature": "CKSAAP",
+      "feature_count": 2400,
+      "labels": ["3.4.19.-", "3.4.19.1", "3.4.19.2", "3.4.19.9", "3.4.19.11", "3.4.19.12", "Others"]
+    },
+    "phase4_serine": {
+      "filename": "phase4_serine_minpred.tflite",
+      "bytes": 157573692,
+      "sha256": "6ccb7271234f9227f9ed70b62dc00a89e84d6d8b71d7b0af486a92ed2e75c1fd",
+      "phase": 4,
+      "feature": "CKSAAP",
+      "feature_count": 2400,
+      "labels": ["3.4.21.-", "3.4.21.53", "3.4.21.62", "3.4.21.88", "3.4.21.89", "3.4.21.92", "3.4.21.102", "3.4.21.105", "3.4.21.107", "Others"]
+    }
+  }
+}

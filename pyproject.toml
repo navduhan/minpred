@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "MINpred"
+version = "1.0.0"
+description = "Deep-learning prediction of nitrogen mineralization-related enzymes"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+  {name = "Naveen Duhan", email = "naveen.duhan@outlook.com"},
+]
+classifiers = [
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = [
+  "biopython>=1.80",
+  "numpy>=1.23",
+  "pandas>=1.5",
+  "platformdirs>=3.0",
+]
+
+[project.optional-dependencies]
+tensorflow = ["tensorflow>=2.13"]
+test = ["pytest>=7"]
+
+[project.scripts]
+minpred = "minpred.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/usubioinfo/minpred"
+Repository = "https://github.com/usubioinfo/minpred"
+Models = "https://doi.org/10.5281/zenodo.21897103"
+
+[tool.setuptools.packages.find]
+include = ["minpred*"]
+
+[tool.setuptools.package-data]
+minpred = ["model_manifest.json"]
