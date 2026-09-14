@@ -71,6 +71,29 @@ minpred models-status
 By default, models are stored in the operating system's user cache directory.
 Set `MINPRED_MODEL_DIR` to use a specific local model directory.
 
+### USU cluster deployment
+
+The maintained cluster launchers mirror the DeepNEC deployment. `minpred.sl`
+loads `dl-gpu`, exposes the TransDecoder 6 installation bundled inside that
+module, validates the Python runtime, and runs the standalone CLI. The web
+wrapper `run_minpred_web.slurm` delegates to the same launcher so web and
+standalone predictions use one code and model checkout.
+
+On `biocluster.usu.edu`, prepare the checkout-local dependency layer without
+replacing the module's TensorFlow installation:
+
+```bash
+module load dl-gpu
+python -m venv --system-site-packages .venv
+.venv/bin/python -m pip install --no-deps -e .
+.venv/bin/python -m pip install platformdirs
+mkdir -p models "$HOME/prediction-jobs/minpred"
+```
+
+The web deployment should use
+`$HOME/naveen_tools/minpred/run_minpred_web.slurm` as its remote script and
+`$HOME/prediction-jobs/minpred` as its remote job directory.
+
 ## Prediction
 
 ```bash
