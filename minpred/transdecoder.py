@@ -6,9 +6,13 @@ Author: Naveen Duhan
 from __future__ import annotations
 
 import hashlib
+import os
 import shutil
 import subprocess
 from pathlib import Path
+
+from Bio import SeqIO
+from Bio.Seq import Seq
 
 
 def _file_digest(path: Path) -> str:
@@ -21,6 +25,12 @@ def _file_digest(path: Path) -> str:
 
 def _executable(name: str) -> str:
     executable = shutil.which(name)
+    if executable is None:
+        conda_prefix = os.environ.get("CONDA_PREFIX")
+        if conda_prefix:
+            packaged = Path(conda_prefix) / "opt" / "transdecoder" / "util" / name
+            if packaged.is_file() and os.access(packaged, os.X_OK):
+                executable = str(packaged)
     if executable is None:
         raise RuntimeError(
             f"{name} was not found on PATH. Install TransDecoder with "
@@ -37,42 +47,56 @@ def translate_nucleotide_fasta(input_fasta: str, output_dir: str) -> str:
         raise FileNotFoundError(f"Nucleotide FASTA not found: {source}")
 
     long_orfs = _executable("TransDecoder.LongOrfs")
-    predict = _executable("TransDecoder.Predict")
     run_dir = Path(output_dir).expanduser().resolve() / (
         "transdecoder_" + _file_digest(source)[:12]
     )
     run_dir.mkdir(parents=True, exist_ok=True)
     local_input = run_dir / "transcripts.fasta"
-    peptide_fasta = run_dir / "transcripts.fasta.transdecoder.pep"
+    transdecoder_output = run_dir / "transdecoder_out"
+    peptide_fasta = transdecoder_output / f"{local_input.name}.transdecoder_dir" / "longest_orfs.pep"
+    legacy_peptide_fasta = transdecoder_output / "longest_orfs.pep"
+    stable_peptide_fasta = Path(output_dir).expanduser().resolve() / "translated_proteins.fasta"
 
-    if peptide_fasta.is_file() and peptide_fasta.stat().st_size > 0:
-        return str(peptide_fasta)
+    for candidate in (peptide_fasta, legacy_peptide_fasta):
+        if candidate.is_file() and candidate.stat().st_size > 0:
+            return _write_clean_peptides(candidate, stable_peptide_fasta)
 
     shutil.copy2(source, local_input)
-    commands = [
-        (long_orfs, "TransDecoder.LongOrfs.log"),
-        (predict, "TransDecoder.Predict.log"),
-    ]
-    for executable, log_name in commands:
-        log_path = run_dir / log_name
-        with log_path.open("w", encoding="utf-8") as log:
-            completed = subprocess.run(
-                [executable, "-t", local_input.name],
-                cwd=run_dir,
-                stdout=log,
-                stderr=subprocess.STDOUT,
-                text=True,
-                check=False,
-            )
-        if completed.returncode != 0:
-            raise RuntimeError(
-                f"{Path(executable).name} failed with exit code "
-                f"{completed.returncode}. See {log_path}."
-            )
+    log_path = run_dir / "TransDecoder.LongOrfs.log"
+    with log_path.open("w", encoding="utf-8") as log:
+        completed = subprocess.run(
+            [long_orfs, "-t", local_input.name, "--output_dir", str(transdecoder_output)],
+            cwd=run_dir,
+            stdout=log,
+            stderr=subprocess.STDOUT,
+            text=True,
+            check=False,
+        )
+    if completed.returncode != 0:
+        raise RuntimeError(
+            f"{Path(long_orfs).name} failed with exit code "
+            f"{completed.returncode}. See {log_path}."
+        )
 
-    if not peptide_fasta.is_file() or peptide_fasta.stat().st_size == 0:
+    if (not peptide_fasta.is_file() or peptide_fasta.stat().st_size == 0) and (
+        not legacy_peptide_fasta.is_file() or legacy_peptide_fasta.stat().st_size == 0
+    ):
         raise RuntimeError(
             "TransDecoder completed without producing a non-empty peptide "
             f"FASTA at {peptide_fasta}."
         )
-    return str(peptide_fasta)
+    source_peptides = peptide_fasta if peptide_fasta.is_file() else legacy_peptide_fasta
+    return _write_clean_peptides(source_peptides, stable_peptide_fasta)
+
+
+def _write_clean_peptides(source: Path, destination: Path) -> str:
+    """Write TransDecoder peptides to a stable, web-compatible FASTA path."""
+    records = list(SeqIO.parse(source, "fasta"))
+    if not records:
+        raise RuntimeError("TransDecoder found no open reading frames.")
+    for record in records:
+        record.seq = Seq(str(record.seq).rstrip("*"))
+    SeqIO.write(records, destination, "fasta")
+    if not destination.is_file() or destination.stat().st_size == 0:
+        raise RuntimeError(f"Unable to write translated peptide FASTA at {destination}.")
+    return str(destination)

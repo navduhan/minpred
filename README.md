@@ -87,10 +87,10 @@ minpred -i transcripts.fasta --sequence-type nucleotide -l Phase4 \
   -n amidohydrolases -od MINpred_results
 ```
 
-In nucleotide mode, MINpred runs `TransDecoder.LongOrfs` followed by
-`TransDecoder.Predict`, preserves their logs and predicted peptide FASTA inside
-the output directory, and then applies the selected MINpred phases to those
-peptides. TransDecoder is an external Conda dependency and is therefore not
+In nucleotide mode, MINpred runs `TransDecoder.LongOrfs`, preserves its log and
+the predicted peptide FASTA inside the output directory, removes terminal stop
+symbols, writes `translated_proteins.fasta`, and then applies the selected
+MINpred phases to those peptides. TransDecoder is an external Conda dependency and is therefore not
 included in `uv.lock`, which covers the Python environment only. The supplied
 `minpred_environment.yml` installs both TransDecoder and the Python runtime.
 
