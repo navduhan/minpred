@@ -69,9 +69,9 @@ def DNN(fasta_file, output_dir, level, pred, output):
         phase3_out = '%s/Phase_3_dnn_log.txt' % (output_dir)
         result = prediction.pred_ne_phase3(enz3, phase3_out)
 
-        phase4_out = '%s/Phase_4_log.txt' % (output_dir)
-        prediction.pred_ne_phase4(phase3_out,output_dir,fasta_file,output,predict=pred)
-        result = pd.read_csv('%s/Phase_4_%s_log.txt' % (output_dir, pred), sep="\t", float_precision='round_trip' )
+        result = prediction.pred_ne_phase4(
+            phase3_out, output_dir, fasta_file, output, predict=pred
+        )
 
     return result
 

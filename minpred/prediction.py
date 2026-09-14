@@ -116,13 +116,31 @@ PHASE4 = {
 
 
 def pred_ne_phase4(infile, output_dir, fasta_file, output, predict=None):
-    if predict not in PHASE4:
+    if predict != "all" and predict not in PHASE4:
         raise ValueError(f"Unknown Phase IV class: {predict}")
     phase3 = pd.read_csv(infile, sep="\t")
-    class_label, predictor = PHASE4[predict]
-    identifiers = phase3.loc[phase3["Prediction"] == class_label, "SampleID"].tolist()
-    input_fasta = f"{output_dir}/{output}_{predict}_input.fasta"
-    utils.fasta_process(fasta_file, input_fasta, identifiers)
-    features = utils.preprocess(input_fasta, "CKSAAP", [0, 0], 2400)
-    outfile = f"{output_dir}/Phase_4_{predict}_log.txt"
-    return predictor(features, outfile)
+    selected_classes = PHASE4.items() if predict == "all" else [(predict, PHASE4[predict])]
+    outputs = []
+
+    def normalized(label):
+        return "".join(character for character in str(label).lower() if character.isalnum())
+
+    phase3_labels = phase3["Prediction"].map(normalized)
+    for class_key, (class_label, predictor) in selected_classes:
+        identifiers = phase3.loc[
+            phase3_labels == normalized(class_label), "SampleID"
+        ].tolist()
+        if not identifiers:
+            continue
+        input_fasta = f"{output_dir}/{output}_{class_key}_input.fasta"
+        utils.fasta_process(fasta_file, input_fasta, identifiers)
+        features = utils.preprocess(input_fasta, "CKSAAP", [0, 0], 2400)
+        outfile = f"{output_dir}/Phase_4_{class_key}_log.txt"
+        table = predictor(features, outfile)
+        table.insert(1, "Enzyme_Class", class_label)
+        table.to_csv(outfile, sep="\t", index=False)
+        outputs.append(table)
+
+    if outputs:
+        return pd.concat(outputs, ignore_index=True)
+    return pd.DataFrame(columns=["SampleID", "Enzyme_Class", "Prediction"])

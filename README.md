@@ -84,8 +84,11 @@ nucleotide FASTA input, install TransDecoder and select nucleotide mode:
 ```bash
 conda install -c conda-forge -c bioconda transdecoder
 minpred -i transcripts.fasta --sequence-type nucleotide -l Phase4 \
-  -n amidohydrolases -od MINpred_results
+  -od MINpred_results
 ```
+
+Phase IV uses the Phase III enzyme-class prediction to select the matching EC
+model for each sequence. Use `-n CLASS` only to restrict Phase IV to one class.
 
 In nucleotide mode, MINpred runs `TransDecoder.LongOrfs`, preserves its log and
 the predicted peptide FASTA inside the output directory, removes terminal stop

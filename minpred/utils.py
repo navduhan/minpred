@@ -187,10 +187,10 @@ def argument_parser(version=__version__):
     )
     parser.add_argument(
         '-n', '--ecnumber',
-        choices=['amidohydrolases', 'aminopeptidases', 'aspartic', 'cysteine',
+        choices=['all', 'amidohydrolases', 'aminopeptidases', 'aspartic', 'cysteine',
                  'dipeptidases', 'dipeptidyl', 'metalloendopeptidases',
                  'metallopeptidases', 'omega', 'serine'],
-        default='amidohydrolases',
-        help="Phase IV enzyme class (default: amidohydrolases)",
+        default='all',
+        help="Phase IV enzyme class (default: all; route from Phase III)",
     )
     return parser
